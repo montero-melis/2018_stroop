@@ -1,0 +1,141 @@
+---
+title: "Stroop analysis"
+author: "Guillermo Montero-Melis"
+date: '`r as.character(format(Sys.Date(), format="%d/%m/%Y"))`'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(knitr)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+
+# guille
+d <- read.csv("data/stroop_red-green-blue_spa__2018_Dec_08_2233.csv")
+d <- d[! is.na(d$trials.thisRepN), ]
+d <- d %>% 
+  select(text : congruent, trials.thisRepN : participant) %>%
+  rename(block = trials.thisRepN, trial = trials.thisN, 
+         correct_resp = resp.corr, RT = resp.rt)
+# order levels for plotting
+d$letterColor <- factor(d$letterColor, levels = c("red", "green", "blue"))
+# head(d)
+```
+
+Intro
+====
+
+Estos son los datos de 
+**`r unique(d$participant)`**, el día
+`r unique(d$date)`.
+
+Hay `r nrow(d)` observaciones (sin contar con la práctica del principio).
+
+
+Limpiar los datos
+==============
+
+Distribución de los tiempos de reacción (RTs):
+
+```{r, message=FALSE}
+ggplot(d, aes(x = RT)) + geom_histogram()
+```
+
+Un resumen de los RTs:
+
+```{r}
+summary(d$RT)
+```
+
+
+```{r}
+# remove observations more than 2.5 SD from the mean or below 100 ms
+outlier_id <- d$RT > mean(d$RT) + 2.5 * sd(d$RT) |
+  d$RT < 0.1
+```
+
+Hay `r sum(outlier_id)` observaciones extremas que quitamos (más de 2.5 desviaciones
+típicas de la media, que era de `r round(mean(d$RT),2)` segundos).
+
+```{r}
+d[outlier_id,] %>% 
+  select(text, letterColor, correct_resp, RT) %>%
+  kable(digits = 2)
+```
+
+```{r}
+d <- d[! outlier_id, ]
+```
+
+
+Visualizar los resultados
+========================
+
+Errores
+-------
+
+```{r}
+d %>% group_by(letterColor, congruent) %>%
+  summarise(Accuracy = mean(correct_resp)) %>% kable
+```
+
+
+```{r}
+d %>% 
+  group_by(letterColor, congruent) %>%
+  summarise(Accuracy = mean(correct_resp)) %>% 
+  ggplot(aes(x = congruent, y = Accuracy, colour = letterColor)) +
+  geom_jitter(height = 0, width = .1, size = 4) +
+  ylim(0, 1)
+```
+
+
+
+Tiempo de reacción (RT)
+--------------------
+
+Comparar tiempo de reacción en la condición congruente (*congr*) vs 
+incongruente (*incongr*):
+
+```{r}
+ggplot(d, aes(x = congruent, y = RT, colour = letterColor)) +
+  geom_jitter(height = 0, width = .1) +
+  ylim(0, max(d$RT)) +
+  geom_smooth(aes(x = as.numeric(congruent)), method = "lm") +
+  facet_grid(. ~ letterColor)
+```
+
+### Cambios a lo largo del experimento
+
+Aquí cada 12 pruebas se consideran un bloque, de manera que podemos ver
+si los tiempos han ido acelerando o decelerando a lo largo del experimento.
+
+Primero la tendencia general:
+
+```{r}
+d %>% 
+  group_by(congruent, block) %>%
+  summarise(mean_RT = mean(RT)) %>% 
+  ggplot(aes(x = block, y = mean_RT, linetype = congruent, 
+             shape = congruent)) +
+  geom_jitter(height = 0, width = .1, size = 2) +
+  geom_smooth(method = "lm", se = TRUE)
+```
+
+Luego, dividiéndo los bloques por color:
+
+```{r, fig.width = 10}
+d %>% 
+  group_by(letterColor, congruent, block) %>%
+  summarise(mean_RT = mean(RT)) %>% 
+  ggplot(aes(x = block, y = mean_RT, colour = letterColor,
+             linetype = congruent, shape = congruent)) +
+  geom_jitter(height = 0, width = .1, size = 2) +
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_grid(. ~ letterColor)
+```
+

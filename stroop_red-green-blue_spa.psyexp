@@ -22,7 +22,7 @@
     <Param name="Show mouse" updates="None" val="False" valType="bool"/>
     <Param name="Data filename" updates="None" val="u'data' + os.sep + '%s_%s_%s' % (expName, expInfo['participant'], expInfo['date'])" valType="code"/>
     <Param name="Show info dlg" updates="None" val="True" valType="bool"/>
-    <Param name="expName" updates="None" val="stroop_simple_spa" valType="str"/>
+    <Param name="expName" updates="None" val="stroop_red-green-blue_spa" valType="str"/>
     <Param name="logging level" updates="None" val="warning" valType="code"/>
     <Param name="Screen" updates="None" val="1" valType="num"/>
   </Settings>
@@ -34,7 +34,7 @@
         <Param name="name" updates="None" val="colour_assignment" valType="code"/>
         <Param name="wrapWidth" updates="constant" val="" valType="code"/>
         <Param name="color" updates="constant" val="white" valType="str"/>
-        <Param name="text" updates="constant" val="Presiona:&amp;#10;&amp;#10;IZQUIERDA si las letras son ROJAS,&amp;#10;DERECHA si las letras son VERDES.&amp;#10;&amp;#10;Pulsa cualquier tecla para empezar la práctica" valType="str"/>
+        <Param name="text" updates="constant" val="Presiona:&amp;#10;&amp;#10;IZQUIERDA si las letras son ROJAS,&amp;#10;ABAJO si las letras son VERDES,&amp;#10;DERECHA si las letras son AZULES.&amp;#10;&amp;#10;Pulsa cualquier tecla para empezar la práctica" valType="str"/>
         <Param name="stopVal" updates="constant" val="" valType="code"/>
         <Param name="durationEstim" updates="None" val="" valType="code"/>
         <Param name="pos" updates="constant" val="(0, 0)" valType="code"/>
@@ -140,7 +140,7 @@
         <Param name="name" updates="constant" val="instrText" valType="code"/>
         <Param name="wrapWidth" updates="constant" val="" valType="code"/>
         <Param name="color" updates="constant" val="$[1, 1, 1]" valType="str"/>
-        <Param name="text" updates="constant" val="Bien. Preparado para comenzar?&amp;#10;&amp;#10;Recuerda, ignora la palabra!&amp;#10;&amp;#10;Presiona:&amp;#10;&amp;#10;IZQUIERDA si las letras son ROJAS,&amp;#10;DERECHA si las letras son VERDES.&amp;#10;&amp;#10;(Esc para salir)&amp;#10;&amp;#10;Pulsa cualquier tecla para comenzar" valType="str"/>
+        <Param name="text" updates="constant" val="Bien. Preparado para comenzar?&amp;#10;&amp;#10;Recuerda: no importa la palabra!&amp;#10;&amp;#10;Presiona:&amp;#10;&amp;#10;IZQUIERDA si las letras son ROJAS,&amp;#10;ABAJO si las letras son VERDES,&amp;#10;DERECHA si las letras son AZULES.&amp;#10;&amp;#10;(Esc para salir)&amp;#10;&amp;#10;Pulsa cualquier tecla para comenzar" valType="str"/>
         <Param name="stopVal" updates="constant" val="" valType="code"/>
         <Param name="durationEstim" updates="None" val="" valType="code"/>
         <Param name="pos" updates="constant" val="[0, 0]" valType="code"/>
@@ -236,14 +236,14 @@
     <Routine name="instructPractice"/>
     <Routine name="assign_colours"/>
     <LoopInitiator loopType="TrialHandler" name="practice">
-      <Param name="conditionsFile" updates="None" val="conditions_red-green_spa.csv" valType="str"/>
+      <Param name="conditionsFile" updates="None" val="conditions_red-green-blue_spa.csv" valType="str"/>
       <Param name="name" updates="None" val="practice" valType="code"/>
       <Param name="isTrials" updates="None" val="True" valType="bool"/>
       <Param name="random seed" updates="None" val="" valType="code"/>
       <Param name="loopType" updates="None" val="fullRandom" valType="str"/>
-      <Param name="nReps" updates="None" val="4" valType="num"/>
+      <Param name="nReps" updates="None" val="2" valType="num"/>
       <Param name="endPoints" updates="None" val="[0, 1]" valType="num"/>
-      <Param name="conditions" updates="None" val="[OrderedDict([('text', u'rojo'), ('letterColor', u'red'), ('corrAns', u'left'), ('congruent', u'cong')]), OrderedDict([('text', u'verde'), ('letterColor', u'green'), ('corrAns', u'right'), ('congruent', u'cong')]), OrderedDict([('text', u'verde'), ('letterColor', u'red'), ('corrAns', u'left'), ('congruent', u'incong')]), OrderedDict([('text', u'rojo'), ('letterColor', u'green'), ('corrAns', u'right'), ('congruent', u'incong')])]" valType="str"/>
+      <Param name="conditions" updates="None" val="[OrderedDict([('text', u'rojo'), ('letterColor', u'red'), ('corrAns', u'left'), ('congruent', u'cong')]), OrderedDict([('text', u'rojo'), ('letterColor', u'red'), ('corrAns', u'left'), ('congruent', u'cong')]), OrderedDict([('text', u'rojo'), ('letterColor', u'green'), ('corrAns', u'down'), ('congruent', u'incong')]), OrderedDict([('text', u'rojo'), ('letterColor', u'blue'), ('corrAns', u'right'), ('congruent', u'incong')]), OrderedDict([('text', u'verde'), ('letterColor', u'green'), ('corrAns', u'down'), ('congruent', u'cong')]), OrderedDict([('text', u'verde'), ('letterColor', u'green'), ('corrAns', u'down'), ('congruent', u'cong')]), OrderedDict([('text', u'verde'), ('letterColor', u'red'), ('corrAns', u'left'), ('congruent', u'incong')]), OrderedDict([('text', u'verde'), ('letterColor', u'blue'), ('corrAns', u'right'), ('congruent', u'incong')]), OrderedDict([('text', u'azul'), ('letterColor', u'blue'), ('corrAns', u'right'), ('congruent', u'cong')]), OrderedDict([('text', u'azul'), ('letterColor', u'blue'), ('corrAns', u'right'), ('congruent', u'cong')]), OrderedDict([('text', u'azul'), ('letterColor', u'red'), ('corrAns', u'left'), ('congruent', u'incong')]), OrderedDict([('text', u'azul'), ('letterColor', u'green'), ('corrAns', u'down'), ('congruent', u'incong')])]" valType="str"/>
       <Param name="Selected rows" updates="None" val="" valType="str"/>
     </LoopInitiator>
     <Routine name="trial"/>
@@ -251,14 +251,14 @@
     <LoopTerminator name="practice"/>
     <Routine name="instruct"/>
     <LoopInitiator loopType="TrialHandler" name="trials">
-      <Param name="conditionsFile" updates="None" val="conditions_red-green_spa.csv" valType="str"/>
+      <Param name="conditionsFile" updates="None" val="conditions_red-green-blue_spa.csv" valType="str"/>
       <Param name="name" updates="None" val="trials" valType="code"/>
       <Param name="isTrials" updates="None" val="True" valType="bool"/>
       <Param name="random seed" updates="None" val="" valType="code"/>
       <Param name="loopType" updates="None" val="fullRandom" valType="str"/>
-      <Param name="nReps" updates="None" val="10" valType="num"/>
+      <Param name="nReps" updates="None" val="12" valType="num"/>
       <Param name="endPoints" updates="None" val="[1, 2]" valType="num"/>
-      <Param name="conditions" updates="None" val="[OrderedDict([('text', u'rojo'), ('letterColor', u'red'), ('corrAns', u'left'), ('congruent', u'cong')]), OrderedDict([('text', u'verde'), ('letterColor', u'green'), ('corrAns', u'right'), ('congruent', u'cong')]), OrderedDict([('text', u'verde'), ('letterColor', u'red'), ('corrAns', u'left'), ('congruent', u'incong')]), OrderedDict([('text', u'rojo'), ('letterColor', u'green'), ('corrAns', u'right'), ('congruent', u'incong')])]" valType="str"/>
+      <Param name="conditions" updates="None" val="[OrderedDict([('text', u'rojo'), ('letterColor', u'red'), ('corrAns', u'left'), ('congruent', u'cong')]), OrderedDict([('text', u'rojo'), ('letterColor', u'red'), ('corrAns', u'left'), ('congruent', u'cong')]), OrderedDict([('text', u'rojo'), ('letterColor', u'green'), ('corrAns', u'down'), ('congruent', u'incong')]), OrderedDict([('text', u'rojo'), ('letterColor', u'blue'), ('corrAns', u'right'), ('congruent', u'incong')]), OrderedDict([('text', u'verde'), ('letterColor', u'green'), ('corrAns', u'down'), ('congruent', u'cong')]), OrderedDict([('text', u'verde'), ('letterColor', u'green'), ('corrAns', u'down'), ('congruent', u'cong')]), OrderedDict([('text', u'verde'), ('letterColor', u'red'), ('corrAns', u'left'), ('congruent', u'incong')]), OrderedDict([('text', u'verde'), ('letterColor', u'blue'), ('corrAns', u'right'), ('congruent', u'incong')]), OrderedDict([('text', u'azul'), ('letterColor', u'blue'), ('corrAns', u'right'), ('congruent', u'cong')]), OrderedDict([('text', u'azul'), ('letterColor', u'blue'), ('corrAns', u'right'), ('congruent', u'cong')]), OrderedDict([('text', u'azul'), ('letterColor', u'red'), ('corrAns', u'left'), ('congruent', u'incong')]), OrderedDict([('text', u'azul'), ('letterColor', u'green'), ('corrAns', u'down'), ('congruent', u'incong')])]" valType="str"/>
       <Param name="Selected rows" updates="None" val="" valType="str"/>
     </LoopInitiator>
     <Routine name="trial"/>

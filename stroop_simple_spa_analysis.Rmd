@@ -1,0 +1,99 @@
+---
+title: "Stroop analysis"
+author: "Guillermo Montero-Melis"
+date: '`r as.character(format(Sys.Date(), format="%d/%m/%Y"))`'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(knitr)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+# aran
+# d <- read.csv("data/aran_2018_Dec_08_1740.csv")
+# guille
+d <- read.csv("data/guille_2018_Dec_08_2144.csv")
+d <- d[! is.na(d$trials.thisRepN), ]
+d <- d %>% 
+  select(text : congruent, resp.keys : participant) %>%
+  rename(RT = resp.rt, correct_resp = resp.corr)
+# head(d)
+```
+
+Intro
+====
+
+Estos son los datos de 
+**`r unique(d$participant)`**, el día
+`r unique(d$date)`
+
+
+Limpiar los datos
+==============
+
+Distribución de los tiempos de reacción (RTs):
+
+```{r, message=FALSE}
+ggplot(d, aes(x = RT)) + geom_histogram()
+```
+
+Un resumen de los RTs:
+
+```{r}
+summary(d$RT)
+```
+
+
+```{r}
+# remove observations more than 2.5 SD from the mean or below 100 ms
+outlier_id <- d$RT > mean(d$RT) + 2.5 * sd(d$RT) |
+  d$RT < 0.1
+```
+
+Hay `r sum(outlier_id)` observaciones extremas que quitamos (más de 2.5 desviaciones
+típicas de la media, que era de `r round(mean(d$RT),2)` segundos).
+
+```{r}
+d[outlier_id,] %>% 
+  select(text, letterColor, correct_resp, RT) %>%
+  kable(digits = 2)
+```
+
+
+Visualizar los resultados
+========================
+
+Errores
+-------
+
+```{r}
+d %>% group_by(letterColor, congruent) %>%
+  summarise(Accuracy = mean(correct_resp)) %>% kable
+```
+
+
+```{r}
+d %>% 
+  group_by(letterColor, congruent) %>%
+  summarise(Accuracy = mean(correct_resp)) %>% 
+  ggplot(aes(x = congruent, y = Accuracy, colour = letterColor)) +
+  geom_jitter(height = 0, width = .1, size = 4) +
+  ylim(0, 1)
+```
+
+
+
+Tiempo de reacción (RT)
+--------------------
+
+```{r}
+ggplot(d, aes(x = congruent, y = RT, colour = letterColor)) +
+  geom_jitter(height = 0) +
+  ylim(0, max(d$RT)) +
+  geom_smooth(aes(x = as.numeric(congruent)), method = "lm")
+```
+
