@@ -1,0 +1,5 @@
+text,letterColor,corrAns,congruent
+rojo,red,left,cong
+verde,green,right,cong
+verde,red,left,incong
+rojo,green,right,incong

@@ -4,3 +4,9 @@
 .Ruserdata
 
 *.xlsx
+*.html
+*.pdf
+
+*_lastrun.py
+*.log
+*.psydat
